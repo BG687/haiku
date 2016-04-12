@@ -28,7 +28,7 @@ function formatData(data){
   	return words;
 }
 
-createHaiku(wordObj);
+createHaiku([5,7,5], wordObj);
 
 
 

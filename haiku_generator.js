@@ -1,25 +1,19 @@
-
-function createHaiku(structure) {
-	var order = [5,7,5]; 
-	varywordCount(structure, 7)
+function createHaiku(structure, obj) {
+	var order = structure; 
 	for (i in order){
-		
-		//print var nums = [];//1,2,3
-		// console.log(getRandom(structure[order[i]]))
+		console.log(getWords(obj, order[i]))
 	}
 }
 
-function varywordCount (arr, num) {
+function getWords (arr, sylbcnt) {
+	var num = sylbcnt;
 	if (num === 0) {
 		return ""
 	}
 	var numArr = Object.keys(arr).slice(1, num+1)
 	var randomSylNum = parseInt(getRandom(numArr))
 	var word = getRandom(arr[randomSylNum])
-	console.log(randomSylNum, num, word, num - randomSylNum)
-	return word+varywordCount(arr, num-randomSylNum)
-
-
+	return word+" "+getWords(arr, num-randomSylNum)
 }
 
 function getRandom (arr) {
