@@ -1,14 +1,13 @@
 var fs = require ("fs"),
- 	haiku = require('./haiku'),
+ 	haiku = require('./haiku_generator'),
 	createHaiku = haiku.createHaiku
 // console.log(createHaiku());
 	cmudictFile = readCmudictFile('./cmudict.txt');
+	wordObj = formatData(cmudictFile); 
 
 function readCmudictFile(file){
   return fs.readFileSync(file).toString();
 }
-
-
 function formatData(data){   
    var words = {}; 
    var lines = data.toString().split("\n"),
@@ -24,14 +23,14 @@ function formatData(data){
 	    	}
 	    	words[syllableCnt].push(lineSplit[0])
 	    }
-	    
 	   	//console.log("The word " + lineSplit[0] + " phoneme layout: " + lineSplit[1], syllableCnt);  
   	});   
   	return words;
 }
 
-
-console.log(formatData(cmudictFile));
-
+createHaiku(wordObj);
 
 
+
+
+// console.log(haiku.createHaiku)
