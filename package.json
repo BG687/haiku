@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Svinci131/haiku#readme",
   "dependencies": {
+    "cron": "^1.1.0",
     "node-twitter-api": "^1.7.1",
     "node-twitterbot": "^0.2.2",
     "pos": "^0.3.0",

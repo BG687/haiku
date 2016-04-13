@@ -1,6 +1,6 @@
 var Twit = require("twit");
 var poem = require("./extraCredit2");
-
+var CronJob = require('cron').CronJob;
 
 var Bot = new Twit({
 	consumer_key: 'xzVg2iJ91ewWu16tu0bRSpYek',
@@ -9,6 +9,21 @@ var Bot = new Twit({
 	access_token_secret: "RPzpraulzkEA59hprbN5xe4QTXEWWcLKek69CP2FSOkJa"
 });
 
-Bot.post('statuses/update', { status: poem() }, function(err, data, response) {
-});
 
+
+var CronJob = require('cron').CronJob;
+var job = new CronJob({
+  cronTime: '00 30 11 * * 0-6',
+  onTick: function() {
+  	Bot.post('statuses/update', { status: poem() }, function(err, data, response) {
+	});
+    /*
+     * Runs every weekday (Monday through Friday)
+     * at 11:30:00 AM. It does not run on Saturday
+     * or Sunday.
+     */
+  },
+  start: false,
+  timeZone: 'America/New_York'
+});
+job.start();
