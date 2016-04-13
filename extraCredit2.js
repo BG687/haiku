@@ -5,7 +5,8 @@ var fs = require ("fs"),
 	http = require("http"),
 	parseString = require('xml2js').parseString,
 	text = formatData(file),
-	filler = ["and"]
+	skip = ["and", "well,","Filby"],
+	cantEndOn = ["a","of","to", "at","the"];
 
 function readCmudictFile(file){
   return fs.readFileSync(file).toString();
@@ -28,7 +29,16 @@ function formatData(data){
 function getRandomParagraph () {
 	var randomIndex = getRandom (Object.keys(text));
 	var randomPar = text[randomIndex].split(" ");
-	console.log("Here", randomPar)
+	//get rid of quotes at beggining of paragraph
+	randomPar[0]=randomPar[0].replace(/'/g,"")
+	//pick another if that 
+	var firstChar = randomPar[0].split("")[0];
+	if (!isNaN(firstChar)) {
+		console.log("num", firstChar)
+		return getRandomParagraph();
+	}
+	// console.log("Here", firstChar)
+	// console.log("Here", isNaN(firstChar))
 	return randomPar
 }
 
@@ -37,7 +47,7 @@ function createHaiku (obj) {
 	var par;
 	for (i in order){
 		par = getRandomParagraph (obj); 
-		writeLine(par, order[i], 0);
+		console.log(writeLine(par, order[i], 0));
 	}
 }
 
@@ -48,19 +58,21 @@ function writeLine (par, length, start) {
 	if (length === 0) {
 		return ""
 	}
-	
+	//check if it's in dictionary file
 	if (dictionary[word.toUpperCase()]){
-		
 		sylNum = dictionary[word.toUpperCase()].syllableCnt 
 	}
-
+	//if too many syllables
 	if (sylNum > length) {
 		return writeLine(par, length, start+1)
 	}
-	console.log("found", word, length)
+	//
+	if (cantEndOn.indexOf(word) >= 0 && length === 1) {
+		return writeLine(par, length, start+1)
+		//console.log("nope", word, length)
+	}
+	//console.log("found", word, length)
 	return word+" "+writeLine(par, length-sylNum, start+1)
-	// }
-	
 }
 
 ////create a rule for dipthongs client, riot, quiet, facial,
