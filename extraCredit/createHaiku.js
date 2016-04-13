@@ -11,13 +11,18 @@ function createHaiku (obj) {
 	for (i in order){
 		par = getRandomParagraph (obj,i); 
 		line = capatalize(writeLine(par, order[i], 0).replace(/\./g,""));
-		console.log(line+",");
+		console.log(line);
 	}
 }
 
 function capatalize (string) {
 	string = string.toLowerCase(); 
 	string = string[0].toUpperCase() + string.substring(1, string.length-1);
+	if (string[0] === '"') {
+		string = string[0]+string[1].toUpperCase() + string.substring(2, string.length-1);
+	}
+	string = string.replace(/\n/g, " ")
+	string = string.replace(/ i /g, " I ")
 	return string
 }
 function getRandomParagraph (text) {
