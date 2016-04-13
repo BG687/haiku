@@ -17,11 +17,8 @@ var job = new CronJob({
   onTick: function() {
   	Bot.post('statuses/update', { status: poem() }, function(err, data, response) {
 	});
-    /*
-     * Runs every weekday (Monday through Friday)
-     * at 11:30:00 AM. It does not run on Saturday
-     * or Sunday.
-     */
+    /* Runs every weekday (Monday through Friday)
+     * at 11:30:00 AM.*/
   },
   start: false,
   timeZone: 'America/New_York'
