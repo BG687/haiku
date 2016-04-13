@@ -4,11 +4,6 @@ var skip = ["-", "of", "project", "and", "gutenberg", "gutenberg-tm"],
 	dictionary = require('./dictionary.js'),
 	pos = require('pos'),
 	tagger = new pos.Tagger();
-	endings = {
-		adjective: ["noun"], 
-		verb: ["adverb", "EX", "noun"], 
-		noun:["verb", "adjective"]
-	}
 
 function createHaiku (obj) {
 	var poem = "";

@@ -1,5 +1,5 @@
 var Twit = require("twit");
-var poem = require("./extraCredit2");
+var poem = require("./app");
 var CronJob = require('cron').CronJob;
 
 var Bot = new Twit({
