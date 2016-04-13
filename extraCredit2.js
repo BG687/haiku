@@ -5,7 +5,7 @@ var fs = require ("fs"),
 	http = require("http"),
 	parseString = require('xml2js').parseString,
 	text = formatData(file),
-	skip = ["and", "Gutenberg-tm","Filby"],
+	skip = ["Project","and", "Gutenberg-tm"],
 	cantEndOn = ["I","was","had","my", "a","of","to", "at","the","with","soon"];
 
 function readCmudictFile(file){
@@ -46,12 +46,20 @@ function createHaiku (obj) {
 	var par;
 	for (i in order){
 		par = getRandomParagraph (obj); 
-		console.log(writeLine(par, order[i], 0));
+		writeLine(par, order[i], 0);
 	}
 }
 
 function writeLine (par, length, start) {
 	var word = par[start];
+	//if paragraph runs out and word is undefined
+	//start at the beggining of the paragraph
+	if (!word) { 
+		console.log("TEST", word)
+		start = 0; 
+		word = par[start];
+		console.log("FIXED", word)
+	}
 	var sylNum = getSyllables(word);
 
 	if (length === 0) {
@@ -74,7 +82,9 @@ function writeLine (par, length, start) {
 		return writeLine(par, length, start+1)
 		//console.log("nope", word, length)
 	}
-	//console.log("found", word, length)
+
+
+	console.log("found", word, length)
 	return word+" "+writeLine(par, length-sylNum, start+1)
 }
 
