@@ -27,6 +27,4 @@ function formatData(data){
 }
 
 
-
-
 haiku.createHaiku(text)

@@ -7,7 +7,7 @@ function createHaiku (obj) {
 	var par;
 	for (i in order){
 		par = getRandomParagraph (obj); 
-		writeLine(par, order[i], 0);
+		console.log(writeLine(par, order[i], 0));
 	}
 }
 
@@ -60,7 +60,7 @@ function writeLine (par, length, start) {
 	}
 
 
-	console.log("found", word, length)
+	//console.log("found", word, length)
 	return word+" "+writeLine(par, length-sylNum, start+1)
 }
 
