@@ -4,7 +4,6 @@ var fs = require ("fs"),
 	dictionary = require('./dictionary.js'),//
 	http = require("http"),
 	obj = formatData(file);
-	// text;
 	
 function readCmudictFile(file){
   return fs.readFileSync(file).toString();
@@ -24,5 +23,6 @@ function formatData(data){
 	return text;
 }
 
-
-haiku.createHaiku(obj)
+module.exports = function () {
+	return haiku.createHaiku(obj)
+}

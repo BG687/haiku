@@ -4,15 +4,16 @@ cantEndOn = ["I",
 dictionary = require('./dictionary.js')
 
 function createHaiku (obj) {
-	console.log("A poem:")
+	var poem = "";
 	var order = [5,7,5]; 
 	var par;
 	var line;
 	for (i in order){
 		par = getRandomParagraph (obj,i); 
 		line = capatalize(writeLine(par, order[i], 0).replace(/\./g,""));
-		console.log(line);
+		poem+=line+"\n"
 	}
+	return poem;
 }
 
 function capatalize (string) {
