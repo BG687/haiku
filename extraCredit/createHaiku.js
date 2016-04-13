@@ -1,20 +1,31 @@
-var skip = ["Project","and", "Gutenberg-tm"],
-cantEndOn = ["I","was","had","my", "a","of","to", "at","the","with","soon"];
+var skip = ["-",  "Project","and", "Gutenberg-tm"],
+cantEndOn = ["I", 
+"'That's", "in", "an", "but","was","had","my", "a","of","to", "at","the","with","soon"];
 dictionary = require('./dictionary.js')
 
 function createHaiku (obj) {
 	console.log("A poem:")
 	var order = [5,7,5]; 
 	var par;
+	var line;
 	for (i in order){
 		par = getRandomParagraph (obj,i); 
-		console.log(writeLine(par, order[i], 0));
+		line = capatalize(writeLine(par, order[i], 0).replace(/\./g,""));
+		console.log(line+",");
 	}
 }
 
+function capatalize (string) {
+	string = string.toLowerCase(); 
+	string = string[0].toUpperCase() + string.substring(1, string.length-1);
+	return string
+}
 function getRandomParagraph (text) {
 	var randomIndex = getRandom (Object.keys(text));
+	// var randomSentance = text[randomIndex];
+	// 	randomSentance = randomSentance.split(".");
 	var randomPar = text[randomIndex].split(" ");
+	
 	//get rid of quotes at beggining of paragraph
 	randomPar[0]=randomPar[0].replace(/'/g,"")
 	//pick another if that 
@@ -28,6 +39,7 @@ function getRandomParagraph (text) {
 }
 
 function writeLine (par, length, start) {
+	// console.log(par)
 	var word = par[start];
 	//if paragraph runs out and word is undefined
 	//start at the beggining of the paragraph
