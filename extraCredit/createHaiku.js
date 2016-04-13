@@ -1,7 +1,14 @@
-var skip = ["-",  "Project","and", "Gutenberg-tm"],
-cantEndOn = ["I", 
-"'That's", "in", "an", "but","was","had","my", "a","of","to", "at","the","with","soon"];
-dictionary = require('./dictionary.js')
+var skip = ["-", "of", "project", "and", "gutenberg", "gutenberg-tm"],
+	cantEndOn = ["i", 
+"'that's", "in", "an", "but","was","had","my", "a","of","to", "at","the","with","soon"];
+	dictionary = require('./dictionary.js'),
+	pos = require('pos'),
+	tagger = new pos.Tagger();
+	endings = {
+		adjective: ["noun"], 
+		verb: ["adverb", "EX", "noun"], 
+		noun:["verb", "adjective"]
+	}
 
 function createHaiku (obj) {
 	var poem = "";
@@ -10,7 +17,7 @@ function createHaiku (obj) {
 	var line;
 	for (i in order){
 		par = getRandomParagraph (obj,i); 
-		line = capatalize(writeLine(par, order[i], 0).replace(/\./g,""));
+		line = capatalize(writeLine(par, order[i], 0).replace(/.,/g,""));
 		poem+=line+"\n"
 	}
 	return poem;
@@ -28,10 +35,7 @@ function capatalize (string) {
 }
 function getRandomParagraph (text) {
 	var randomIndex = getRandom (Object.keys(text));
-	// var randomSentance = text[randomIndex];
-	// 	randomSentance = randomSentance.split(".");
 	var randomPar = text[randomIndex].split(" ");
-	
 	//get rid of quotes at beggining of paragraph
 	randomPar[0]=randomPar[0].replace(/'/g,"")
 	//pick another if that 
@@ -44,43 +48,43 @@ function getRandomParagraph (text) {
 	}
 }
 
-function writeLine (par, length, start) {
-	// console.log(par)
-	var word = par[start];
+function writeLine (par, length, start, pos) {
+	var word = par[start].toLowerCase();
 	//if paragraph runs out and word is undefined
 	//start at the beggining of the paragraph
 	if (!word) { 
-		// console.log("TEST", word)
 		start = 0; 
 		word = par[start];
-		// console.log("FIXED", word)
 	}
-	var sylNum = getSyllables(word);
+	var searchWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"")
+		searchWord = word.replace(/\s{2,}/g,"");
+	var sylNum = getSyllables(searchWord);
+	var POS = tagger.tag([word])[0][1];
 
 	if (length === 0) {
 		return ""
 	}
 	//check if it's in dictionary file
-	if (dictionary[word.toUpperCase()]){
-		sylNum = dictionary[word.toUpperCase()].syllableCnt 
+	if (dictionary[searchWord.toUpperCase()]){
+		sylNum = dictionary[searchWord.toUpperCase()].syllableCnt 
 	}
 	//if too many syllables
 	if (sylNum > length) {
 		return writeLine(par, length, start+1)
 	}
-	//skip certain words always
+
 	if (skip.indexOf(word) >= 0) {
 		return writeLine(par, length, start+1)
 	}
-	//don't end with an adjective or preposition
+	//don't end with on certain words
 	if (cantEndOn.indexOf(word) >= 0 && length === 1) {
 		return writeLine(par, length, start+1)
 		//console.log("nope", word, length)
 	}
-
-
-	//console.log("found", word, length)
-	return word+" "+writeLine(par, length-sylNum, start+1)
+	if (length === 1) {
+		word.replace(/\'s/g, "")
+	}
+	return word+" "+writeLine(par, length-sylNum, start+1, null)
 }
 
 function getSyllables (word) {

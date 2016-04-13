@@ -23,6 +23,7 @@ function formatData(data){
 	return text;
 }
 
+console.log(haiku.createHaiku(obj))
 module.exports = function () {
 	return haiku.createHaiku(obj)
 }

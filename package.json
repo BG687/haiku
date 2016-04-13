@@ -19,6 +19,7 @@
   "dependencies": {
     "node-twitter-api": "^1.7.1",
     "node-twitterbot": "^0.2.2",
+    "pos": "^0.3.0",
     "syllable": "^0.1.4",
     "twit": "^2.2.3",
     "xml2js": "^0.4.16"
