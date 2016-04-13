@@ -3,11 +3,9 @@ var fs = require ("fs"),
 	file = readCmudictFile('../timeMachine.txt'),
 	dictionary = require('./dictionary.js'),//
 	http = require("http"),
-	parseString = require('xml2js').parseString,
-	text = formatData(file),
-	skip = ["Project","and", "Gutenberg-tm"],//
-	cantEndOn = ["I","was","had","my", "a","of","to", "at","the","with","soon"];
-
+	obj = formatData(file);
+	// text;
+	
 function readCmudictFile(file){
   return fs.readFileSync(file).toString();
 }
@@ -27,4 +25,4 @@ function formatData(data){
 }
 
 
-haiku.createHaiku(text)
+haiku.createHaiku(obj)

@@ -3,10 +3,11 @@ cantEndOn = ["I","was","had","my", "a","of","to", "at","the","with","soon"];
 dictionary = require('./dictionary.js')
 
 function createHaiku (obj) {
+	console.log("A poem:")
 	var order = [5,7,5]; 
 	var par;
 	for (i in order){
-		par = getRandomParagraph (obj); 
+		par = getRandomParagraph (obj,i); 
 		console.log(writeLine(par, order[i], 0));
 	}
 }
@@ -19,7 +20,7 @@ function getRandomParagraph (text) {
 	//pick another if that 
 	var firstChar = randomPar[0].split("")[0];
 	if (!isNaN(firstChar)) {
-		return getRandomParagraph();
+		return getRandomParagraph(text);
 	}
 	else {
 		return randomPar
@@ -31,10 +32,10 @@ function writeLine (par, length, start) {
 	//if paragraph runs out and word is undefined
 	//start at the beggining of the paragraph
 	if (!word) { 
-		console.log("TEST", word)
+		// console.log("TEST", word)
 		start = 0; 
 		word = par[start];
-		console.log("FIXED", word)
+		// console.log("FIXED", word)
 	}
 	var sylNum = getSyllables(word);
 
