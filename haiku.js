@@ -43,5 +43,6 @@ function createDictionary (data) {
   	return dictionary;
 }
 
-console.log(createDictionary(cmudictFile))
+module.exports = createDictionary(cmudictFile);
+
 //createHaiku([5,7,5], wordObj);

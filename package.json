@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Svinci131/haiku#readme",
   "dependencies": {
+    "syllable": "^0.1.4",
     "xml2js": "^0.4.16"
   }
 }

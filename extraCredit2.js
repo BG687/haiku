@@ -1,10 +1,11 @@
 var fs = require ("fs"),
  	haiku = require('./haiku_generator'),
 	file = readCmudictFile('./timeMachine.txt'),
-	dictionary = {},
+	dictionary = require('./haiku')
 	http = require("http"),
-	parseString = require('xml2js').parseString;
-	text = formatData(file); 
+	parseString = require('xml2js').parseString,
+	text = formatData(file),
+	filler = ["and"]
 
 function readCmudictFile(file){
   return fs.readFileSync(file).toString();
@@ -27,6 +28,7 @@ function formatData(data){
 function getRandomParagraph () {
 	var randomIndex = getRandom (Object.keys(text));
 	var randomPar = text[randomIndex].split(" ");
+	console.log("Here", randomPar)
 	return randomPar
 }
 
@@ -35,18 +37,30 @@ function createHaiku (obj) {
 	var par;
 	for (i in order){
 		par = getRandomParagraph (obj); 
-		console.log(writeLine(par, order[i], 0))
+		writeLine(par, order[i], 0);
 	}
 }
 
 function writeLine (par, length, start) {
+	var word = par[start];
+	var sylNum = getSyllables(word);
+
 	if (length === 0) {
 		return ""
 	}
-	var word = par[start];
-	var sylNum = getSyllables(word)
-	//console.log(word);
+	
+	if (dictionary[word.toUpperCase()]){
+		
+		sylNum = dictionary[word.toUpperCase()].syllableCnt 
+	}
+
+	if (sylNum > length) {
+		return writeLine(par, length, start+1)
+	}
+	console.log("found", word, length)
 	return word+" "+writeLine(par, length-sylNum, start+1)
+	// }
+	
 }
 
 ////create a rule for dipthongs client, riot, quiet, facial,
@@ -83,7 +97,6 @@ function getSyllables (word) {
 		syllables.push(holder)
 	}
 	return syllables.length
-
 }
 
 function getRandom (arr) {
