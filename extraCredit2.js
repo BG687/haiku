@@ -5,8 +5,8 @@ var fs = require ("fs"),
 	http = require("http"),
 	parseString = require('xml2js').parseString,
 	text = formatData(file),
-	skip = ["and", "well,","Filby"],
-	cantEndOn = ["a","of","to", "at","the"];
+	skip = ["and", "Gutenberg-tm","Filby"],
+	cantEndOn = ["I","was","had","my", "a","of","to", "at","the","with","soon"];
 
 function readCmudictFile(file){
   return fs.readFileSync(file).toString();
@@ -34,12 +34,11 @@ function getRandomParagraph () {
 	//pick another if that 
 	var firstChar = randomPar[0].split("")[0];
 	if (!isNaN(firstChar)) {
-		console.log("num", firstChar)
 		return getRandomParagraph();
 	}
-	// console.log("Here", firstChar)
-	// console.log("Here", isNaN(firstChar))
-	return randomPar
+	else {
+		return randomPar
+	}
 }
 
 function createHaiku (obj) {
@@ -66,7 +65,11 @@ function writeLine (par, length, start) {
 	if (sylNum > length) {
 		return writeLine(par, length, start+1)
 	}
-	//
+	//skip certain words always
+	if (skip.indexOf(word) >= 0) {
+		return writeLine(par, length, start+1)
+	}
+	//don't end with an adjective or preposition
 	if (cantEndOn.indexOf(word) >= 0 && length === 1) {
 		return writeLine(par, length, start+1)
 		//console.log("nope", word, length)
