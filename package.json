@@ -1,9 +1,9 @@
 {
   "name": "haiku",
   "version": "1.0.0",
-  "description": "",
-  "main": "haiku.js",
+  "main": "twitterBot.js",
   "scripts": {
+    "start": "node twitterBot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,5 +24,7 @@
     "syllable": "^0.1.4",
     "twit": "^2.2.3",
     "xml2js": "^0.4.16"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
