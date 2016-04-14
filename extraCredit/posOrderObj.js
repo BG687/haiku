@@ -1,6 +1,6 @@
 //PRP Personal pronoun(I,you,she)
 	//https://en.wikipedia.org/wiki/Parse_tree
-	//https://en.wikipedia.org/wiki/Parse_tree
+	//https://github.com/dariusk/pos-js
 
 module.exports = {
 	IN: {
