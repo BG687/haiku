@@ -10,7 +10,7 @@ var Bot = new Twit({
 });
 
 
-
+console.log(poem())
 var CronJob = require('cron').CronJob;
 var job = new CronJob({
   cronTime: '00 30 08 * * 0-6',
