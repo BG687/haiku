@@ -12,7 +12,8 @@ function createHaiku (obj) {
 	var line;
 	
 	for (i in order){
-		line = writeLine(obj, order[i],0)
+		par = getRandomParagraph (obj);
+		line = capatalize(writeLine(par, order[i],0))
 		poem+=line+"\n"
 	}
 	return poem;
@@ -34,8 +35,7 @@ function getRandomParagraph (text) {
 	}
 }
 
-function writeLine (obj, length, start) {
-	var par = getRandomParagraph (obj); 
+function writeLine (par, length, start) { 
 	var sylCount = 0; 
 	var string = ""
 	//start at the beggining 
@@ -45,23 +45,26 @@ function writeLine (obj, length, start) {
 	//add some end checks 
 	//par.length
 	for (var i = start; i <par.length; i++){
+		console.log(string, sylCount, length)
+		//getting new paragraph maybe better to write a seperate function for within the for loop 
 		var word = formatWord(par[i]);
-		// var searchWord = getSearchWord(word);
 		var syllables = getDictSyllables(word);
 		if (!syllables) {
 			syllables = countSyllables (word)
 		}
+
 		sylCount+=syllables;
 		string+=" "+word;
 		if (sylCount === length) {
 			break;
 		}
 		else if (sylCount > length) {
-			return writeLine (obj, length, start+1)
+			console.log("redo")
+			return writeLine (par, length, start+1)
 		}
 		
 	}
-	// console.log(string, sylCount, length)
+	
 	return string
 }
 
@@ -70,7 +73,6 @@ function formatWord (word) {
 		// searchWord = searchWord.toUpperCase();
 	return word
 }
-
 
 function getDictSyllables (word) {
 	word = word.toUpperCase();
@@ -123,11 +125,11 @@ function getRandom (arr) {
 }
 function capatalize (string) {
 	string = string.toLowerCase(); 
-	string = string[0].toUpperCase() + string.substring(1, string.length-1);
-	if (string[0] === '"') {
-		string = string[0]+string[1].toUpperCase() + string.substring(2, string.length-1);
-	}
-	string = string.replace(/\n/g, " ")
+	string = string[1].toUpperCase()+string.slice(2);
+	// if (string[0] === '"') {
+	// 	string = string[0]+string[1].toUpperCase() + string.substring(2, string.length-1);
+	// }
+	//string = string.replace(/\n/g, " ")
 	string = string.replace(/ i /g, " I ")
 	return string
 }
