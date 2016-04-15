@@ -1,6 +1,6 @@
-var skip = ["-", "of", "project", "and", "gutenberg", "gutenberg-tm"],
+var skip = ["gutenberg", "gutenbergtm", "ebooks"],
 	cantEndOn = ["i", 
-"'that's", "in", "an", "but","was","had","my", "a","of","to", "at","the","with","soon"];
+"'that's", "in", "an", "and", "but","was","my", "a","of","to", "at","the","with","soon"];
 	dictionary = require('./dictionary.js'),
 	pos = require('pos'),
 	tagger = new pos.Tagger();
@@ -12,13 +12,22 @@ function createHaiku (obj) {
 	var line;
 	
 	for (i in order){
-		par = getRandomParagraph (obj);
-		line = capatalize(writeLine(par, order[i],0))
+		line = approveLine(obj, order[i]);
 		poem+=line+"\n"
 	}
 	return poem;
 }
 
+function approveLine (obj, num) {
+	var par = getRandomParagraph (obj);
+	var line = capatalize(writeLine(par, num, 0))
+	if (isBookText(line)) {
+		return line	
+	}
+	else {
+		return checkLine(obj)
+	}
+}
 
 function getRandomParagraph (text) {
 	var randomIndex = getRandom (Object.keys(text));
@@ -45,27 +54,49 @@ function writeLine (par, length, start) {
 	//add some end checks 
 	//par.length
 	for (var i = start; i <par.length; i++){
-		console.log(string, sylCount, length)
 		//getting new paragraph maybe better to write a seperate function for within the for loop 
 		var word = formatWord(par[i]);
 		var syllables = getDictSyllables(word);
+
 		if (!syllables) {
 			syllables = countSyllables (word)
 		}
 
 		sylCount+=syllables;
 		string+=" "+word;
+
 		if (sylCount === length) {
+			if (cantEndOn.indexOf(word) >= 0) {
+				// console.log("can't endon")
+				return writeLine (par, length, start+1)
+				//console.log("nope", word, length)
+			}
 			break;
 		}
 		else if (sylCount > length) {
-			console.log("redo")
+			// console.log("redo")
 			return writeLine (par, length, start+1)
 		}
 		
 	}
 	
 	return string
+}
+
+function isBookText (string) {
+	var acceptable = true;
+	var arr = string.split(" ");
+	// console.log(skip.indexOf(string));
+	arr.forEach (function (el, i){
+		if (skip.indexOf(el) >= 0) {	
+			acceptable = false;
+		}
+		if (!isNaN(el[0])){
+			acceptable = false; 
+		}
+	});
+
+	return acceptable;
 }
 
 function formatWord (word) {
@@ -129,7 +160,7 @@ function capatalize (string) {
 	// if (string[0] === '"') {
 	// 	string = string[0]+string[1].toUpperCase() + string.substring(2, string.length-1);
 	// }
-	//string = string.replace(/\n/g, " ")
+	string = string.replace(/\n/g, " ")
 	string = string.replace(/ i /g, " I ")
 	return string
 }
