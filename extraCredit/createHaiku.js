@@ -44,12 +44,12 @@ function writeLine (obj, length, start) {
 	//if it's equal remove that line from the object(global) and return that line
 	//add some end checks 
 	//par.length
-	for (var i = start; i <length; i++){
-		var word = par[i];
-		var searchWord = getSearchWord(word);
-		var syllables = getDictSyllables(searchWord);
+	for (var i = start; i <par.length; i++){
+		var word = formatWord(par[i]);
+		// var searchWord = getSearchWord(word);
+		var syllables = getDictSyllables(word);
 		if (!syllables) {
-			syllables = countSyllables (searchWord)
+			syllables = countSyllables (word)
 		}
 		sylCount+=syllables;
 		string+=" "+word;
@@ -65,52 +65,15 @@ function writeLine (obj, length, start) {
 	return string
 }
 
-function getSearchWord (word) {
-	var searchWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`'~()]/g,"").replace(/\s{2,}/g,"");
-		searchWord = searchWord.toUpperCase();
-		return searchWord
+function formatWord (word) {
+	word = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`'~()]/g,"").replace(/\s{2,}/g,"");
+		// searchWord = searchWord.toUpperCase();
+	return word
 }
 
 
-// function writeLine (par, length, start, pos) {
-// 	var word = par[start].toLowerCase();
-// 	//if paragraph runs out and word is undefined
-// 	//start at the beggining of the paragraph
-// 	if (!word) { 
-// 		start = 0; 
-// 		word = par[start];
-// 	}
-// 	var searchWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"")
-// 		searchWord = word.replace(/\s{2,}/g,"");
-// 	var sylNum = getSyllables(searchWord);
-// 	var POS = tagger.tag([word])[0][1];
-
-// 	if (length === 0) {
-// 		return ""
-// 	}
-// 	//check if it's in dictionary file
-// 	if (dictionary[searchWord.toUpperCase()]){
-// 		sylNum = dictionary[searchWord.toUpperCase()].syllableCnt 
-// 	}
-// 	//if too many syllables
-// 	if (sylNum > length) {
-// 		return writeLine(par, length, start+1)
-// 	}
-
-// 	if (skip.indexOf(word) >= 0) {
-// 		return writeLine(par, length, start+1)
-// 	}
-// 	//don't end with on certain words
-// 	if (cantEndOn.indexOf(word) >= 0 && length === 1) {
-// 		return writeLine(par, length, start+1)
-// 		//console.log("nope", word, length)
-// 	}
-// 	if (length === 1) {
-// 		word.replace(/\'s/g, "")
-// 	}
-// 	return word+" "+writeLine(par, length-sylNum, start+1, null)
-// }
 function getDictSyllables (word) {
+	word = word.toUpperCase();
 	if (dictionary[word]){
 		var syllables = dictionary[word].syllableCnt;
 		return syllables
@@ -155,12 +118,6 @@ function countSyllables (word) {
 	return syllables.length
 }
 
-
-
-
-
-
-
 function getRandom (arr) {
 	return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -175,15 +132,45 @@ function capatalize (string) {
 	return string
 }
 
-
-
-
-
-
-
-
 module.exports = {
   createHaiku: createHaiku,
 };
 
+// function writeLine (par, length, start, pos) {
+// 	var word = par[start].toLowerCase();
+// 	//if paragraph runs out and word is undefined
+// 	//start at the beggining of the paragraph
+// 	if (!word) { 
+// 		start = 0; 
+// 		word = par[start];
+// 	}
+// 	var searchWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"")
+// 		searchWord = word.replace(/\s{2,}/g,"");
+// 	var sylNum = getSyllables(searchWord);
+// 	var POS = tagger.tag([word])[0][1];
 
+// 	if (length === 0) {
+// 		return ""
+// 	}
+// 	//check if it's in dictionary file
+// 	if (dictionary[searchWord.toUpperCase()]){
+// 		sylNum = dictionary[searchWord.toUpperCase()].syllableCnt 
+// 	}
+// 	//if too many syllables
+// 	if (sylNum > length) {
+// 		return writeLine(par, length, start+1)
+// 	}
+
+// 	if (skip.indexOf(word) >= 0) {
+// 		return writeLine(par, length, start+1)
+// 	}
+// 	//don't end with on certain words
+// 	if (cantEndOn.indexOf(word) >= 0 && length === 1) {
+// 		return writeLine(par, length, start+1)
+// 		//console.log("nope", word, length)
+// 	}
+// 	if (length === 1) {
+// 		word.replace(/\'s/g, "")
+// 	}
+// 	return word+" "+writeLine(par, length-sylNum, start+1, null)
+// }
