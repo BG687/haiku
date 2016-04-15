@@ -1,5 +1,6 @@
 var fs = require ("fs"),
-	cmudictFile = readCmudictFile('./cmudict.txt');
+//links ./
+	cmudictFile = readCmudictFile('../cmudict.txt');
 
 function readCmudictFile(file){
   return fs.readFileSync(file).toString();

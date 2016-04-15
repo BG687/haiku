@@ -1,6 +1,7 @@
 var fs = require ("fs"),
  	haiku = require('./createHaiku'),
-	file = readCmudictFile('./timeMachine.txt'),
+ 		//links ./
+	file = readCmudictFile('../timeMachine.txt'),
 	dictionary = require('./dictionary.js'),//
 	http = require("http"),
 	obj = formatData(file);
@@ -22,6 +23,8 @@ function formatData(data){
 	});
 	return text;
 }
+
+console.log(haiku.createHaiku(obj))
 
 module.exports = function () {
 	return haiku.createHaiku(obj)
